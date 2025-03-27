@@ -9,13 +9,20 @@ public class BookStore{
     private static final String BOOKS_FILE = "books.txt";
     private static final String CUSTOMERS_FILE = "customers.txt";
     
-    public List<Book> displayBooks(){
-        return books;
+    public void displayBooks(){
+        System.out.println("Books available in store:");
+        for (Book book : books){
+            System.out.println(book.getName() + " - $" + book.getPrice());
+        }
     }
     
-    public List<Customer> displayCustomers(){
-        return customers;
+    public void displayCustomers(){
+        System.out.println("Customers:");
+        for (Customer customer : customers){
+            System.out.println(customer.getUsername() + " | Points: " + customer.getPoints());
+        }
     }
+    
     
     public void addBook(String name, double price){
         books.add(new Book(name, price));

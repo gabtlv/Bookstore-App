@@ -1,11 +1,17 @@
 package bookstore.app;
 
 public class Owner extends User{
-    public Owner(String username, String password){
+    private BookStore bookStore;
+    
+    public Owner(String username, String password, BookStore bookStore){
         super(username, password);
+        this.bookStore = bookStore;
+    }
+    public void viewBooks(){
+        bookStore.displayBooks();
     }
     
-    public void viewBook(){
-        
+    public void viewCustomers(){
+        bookStore.displayCustomers();
     }
 }
