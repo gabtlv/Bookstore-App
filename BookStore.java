@@ -23,6 +23,28 @@ public class BookStore{
         }
     }
     
+    public boolean buyBook(Customer customer, String bookName){
+        for (Book book : books){
+            if (book.getName().equals(bookName)){
+                System.out.println(customer.getUsername() + "bought " + bookName);
+                customer.addPoints(10);
+                books.remove(book);
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean redeemPointsAndBuy(Customer customer, String bookName, int requiredPoints){
+        for (Book book : books){
+            if (book.getName().equals(bookName) && customer.redeemPoints(requiredPoints)){
+                System.out.println(customer.getUsername() + "redeemed points to buy " + bookName);
+                books.remove(book);
+                return true;
+            }
+        }
+        return false;
+    }
     
     public void addBook(String name, double price){
         books.add(new Book(name, price));

@@ -10,10 +10,12 @@ public class Silver implements State{
     }
     
     
-    public void redeemPoints(Customer customer, double amount){
+    public boolean redeemPoints(Customer customer, double amount){
         int pointsToRedeem = (int)amount*100;
         if (customer.getPoints() >= pointsToRedeem){
             customer.removePoints(pointsToRedeem);
+            return true;
         }
+        return false;
     }
 }
