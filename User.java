@@ -1,4 +1,3 @@
-
 package bookstore.app;
 
 public class User {
@@ -23,7 +22,8 @@ public class User {
     }
     
     public void logout(){
-        
+        System.out.println("Logging out...");
+        System.exit(0);
     }
     
 }
