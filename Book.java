@@ -1,28 +1,36 @@
-package bookstore.app;
+package finalproject;
 
-public class Book {
+import java.io.Serializable;
+import javafx.scene.control.CheckBox;
+
+/**
+ *
+ * @author esabu
+ */
+public class Book implements Serializable{
     private String name;
     private double price;
+    private CheckBox checkBox;
     
-    public Book(String name, double price){
-        this.name=name;
-        this.price=price;
+    public Book(String n, double p){
+        this.name= n;
+        this.price=p;
+        this.checkBox = new CheckBox();
     }
-    
     public String getName(){
-        return name;
+        return this.name;
     }
-    
     public double getPrice(){
         return price;
     }
     
-    public void setName(String name){
-        this.name=name;
+    public CheckBox getCheckBox() { 
+    return checkBox; 
     }
     
-    public void setPrice(double price){
-        this.price=price;
+    @Override
+    public String toString(){
+        return this.name + " - $"+ this.price;
     }
-    
+
 }
