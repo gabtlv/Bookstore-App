@@ -3,30 +3,32 @@ package finalproject;
 import java.io.Serializable;
 import javafx.scene.control.CheckBox;
 
-public class Book implements Serializable{
+public class Book implements Serializable {
     private String name;
     private double price;
     private CheckBox checkBox;
-    
-    public Book(String n, double p){
-        this.name= n;
-        this.price=p;
+
+    public Book(String n, double p) {
+        this.name = n;
+        this.price = p;
         this.checkBox = new CheckBox();
     }
-    public String getName(){
+
+    public String getName() {
         return this.name;
     }
-    public double getPrice(){
+
+    public double getPrice() {
         return price;
     }
-    
-    public CheckBox getCheckBox() { 
-    return checkBox; 
+
+    public CheckBox getCheckBox() {
+        return checkBox;
     }
-    
+
     @Override
-    public String toString(){
-        return this.name + " - $"+ this.price;
+    public String toString() {
+        return this.name + " - $" + this.price;
     }
 
 }
