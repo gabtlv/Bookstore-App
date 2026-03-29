@@ -1,119 +1,64 @@
-package bookstore.app;
-import java.util.ArrayList;
-import java.util.List;
+package finalproject;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import java.io.*;
 
-public class BookStore{
-    private List<Book> books = new ArrayList<>();
-    private List<Customer> customers = new ArrayList<>();
-    private static final String BOOKS_FILE = "books.txt";
-    private static final String CUSTOMERS_FILE = "customers.txt";
-    
-    public void displayBooks(){
-        System.out.println("Books available in store:");
-        for (Book book : books){
-            System.out.println(book.getName() + " - $" + book.getPrice());
+public class BookStore {
+    private static final String BOOK_FILE = "books.txt";
+    private ObservableList<Book> books;
+
+    public BookStore() {
+        books = FXCollections.observableArrayList();
+        loadBooks(); // Load books when the store is initialized
+    }
+
+    public ObservableList<Book> getBooks() {
+        return books;
+    }
+
+    public void addBook(Book book) {
+        if (!bookExists(book.getName())) {
+            books.add(book);
+            saveBooks();
         }
     }
-    
-    public void displayCustomers(){
-        System.out.println("Customers:");
-        for (Customer customer : customers){
-            System.out.println(customer.getUsername() + " | Points: " + customer.getPoints());
-        }
+
+    public void removeBook(Book book) {
+        books.remove(book);
+        saveBooks();
     }
-    
-    public boolean buyBook(Customer customer, String bookName){
-        for (Book book : books){
-            if (book.getName().equals(bookName)){
-                System.out.println(customer.getUsername() + "bought " + bookName);
-                customer.addPoints(10);
-                books.remove(book);
-                return true;
+
+    private boolean bookExists(String name) {
+        return books.stream().anyMatch(b -> b.getName().equalsIgnoreCase(name));
+    }
+
+    public void loadBooks() {
+        File file = new File(BOOK_FILE);
+        if (!file.exists()) return;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            books.clear();
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(",");
+                if (data.length == 2) {
+                    books.add(new Book(data[0].trim(), Double.parseDouble(data[1].trim())));
+                }
             }
+        } catch (IOException | NumberFormatException e) {
+            e.printStackTrace();
         }
-        return false;
     }
-    
-    public boolean redeemPointsAndBuy(Customer customer, String bookName, int requiredPoints){
-        for (Book book : books){
-            if (book.getName().equals(bookName) && customer.redeemPoints(requiredPoints)){
-                System.out.println(customer.getUsername() + "redeemed points to buy " + bookName);
-                books.remove(book);
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    public void addBook(String name, double price){
-        books.add(new Book(name, price));
-    }
-    
-    public void deleteBook(String name){
-        books.removeIf(book -> book.getName().equals(name));
-    }
-    
-    public void addCustomer(String username, String password){
-        customers.add(new Customer(username, password));
-    }
-    
-    public void deleteCustomer(String username){
-        customers.removeIf(customer -> customer.getUsername().equals(username));
-    }
-    
-    public void saveBooksToFile(){
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(BOOKS_FILE))){
-            for (Book book: books){
+
+    private void saveBooks() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(BOOK_FILE))) {
+            for (Book book : books) {
                 writer.write(book.getName() + "," + book.getPrice());
                 writer.newLine();
             }
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
-    public void loadBooksFromFile(){
-        books.clear();
-        try(BufferedReader reader = new BufferedReader(new FileReader(BOOKS_FILE))){
-            String line;
-            while ((line = reader.readLine()) != null){
-                String[] parts = line.split(",");
-                if(parts.length == 2){
-                    books.add(new Book(parts[0], Double.parseDouble(parts[1])));
-                }
-            }
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-    
-    public void saveCustomersToFile() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CUSTOMERS_FILE))){
-            for (Customer customer : customers){
-                writer.write(customer.getUsername() + "," + customer.password + "," + customer.getPoints());
-                writer.newLine();
-            }
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-    
-    public void loadCustomersFromFile() {
-        customers.clear();
-        try (BufferedReader reader = new BufferedReader(new FileReader(CUSTOMERS_FILE))){
-            String line;
-            while ((line = reader.readLine()) != null){
-                String[] parts = line.split(",");
-                if(parts.length == 3){
-                    Customer customer = new Customer(parts[0], parts[1]);
-                    customer.addPoints(Integer.parseInt(parts[2]));
-                    customers.add(customer);
-                }
-            }
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-    
 }
