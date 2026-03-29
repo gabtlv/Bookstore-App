@@ -3,10 +3,6 @@ package finalproject;
 import java.io.Serializable;
 import javafx.scene.control.CheckBox;
 
-/**
- *
- * @author esabu
- */
 public class Book implements Serializable{
     private String name;
     private double price;
