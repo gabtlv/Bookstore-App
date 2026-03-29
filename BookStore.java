@@ -35,7 +35,8 @@ public class BookStore {
 
     public void loadBooks() {
         File file = new File(BOOK_FILE);
-        if (!file.exists()) return;
+        if (!file.exists())
+            return;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
